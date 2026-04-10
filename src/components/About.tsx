@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 
 const experience = [
@@ -35,6 +35,7 @@ const experience = [
 export default function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [imgError, setImgError] = useState(false);
 
   return (
     <section id="sobre-mi" className="py-32 px-6" ref={ref}>
@@ -56,18 +57,25 @@ export default function About() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="flex items-start gap-8 mb-20"
+          className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 mb-20"
         >
           {/* Avatar */}
-          <div className="shrink-0 hidden md:block">
-            <div className="w-24 h-24 rounded-2xl overflow-hidden border border-border bg-card">
-              <Image
-                src="https://github.com/gaperaltadev.png"
-                alt="Gabriel Amarilla"
-                width={96}
-                height={96}
-                className="object-cover"
-              />
+          <div className="shrink-0">
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden border border-border bg-card">
+              {imgError ? (
+                <div className="w-full h-full flex items-center justify-center bg-card">
+                  <span className="text-2xl font-bold text-accent/40">GA</span>
+                </div>
+              ) : (
+                <Image
+                  src="https://github.com/gaperaltadev.png"
+                  alt="Gabriel Amarilla"
+                  width={96}
+                  height={96}
+                  className="object-cover"
+                  onError={() => setImgError(true)}
+                />
+              )}
             </div>
           </div>
 

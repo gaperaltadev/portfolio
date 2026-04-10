@@ -1,10 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "./icons";
 
 function FloatingNode({ delay, x, y, size }: { delay: number; x: string; y: string; size: number }) {
+  const prefersReducedMotion = useReducedMotion();
+  if (prefersReducedMotion) return null;
   return (
     <motion.div
       className="absolute rounded-full bg-accent/[0.07] border border-accent/[0.08]"
@@ -26,6 +28,8 @@ function FloatingNode({ delay, x, y, size }: { delay: number; x: string; y: stri
 }
 
 function ConnectionLine({ x1, y1, x2, y2, delay }: { x1: string; y1: string; x2: string; y2: string; delay: number }) {
+  const prefersReducedMotion = useReducedMotion();
+  if (prefersReducedMotion) return null;
   return (
     <motion.svg
       className="absolute inset-0 w-full h-full pointer-events-none"

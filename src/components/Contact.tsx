@@ -69,7 +69,7 @@ export default function Contact() {
               Email
             </a>
             <a
-              href="https://wa.me/595986398117"
+              href="https://wa.me/595986398117?text=Hola%20Gabriel%2C%20vi%20tu%20portfolio%20y%20me%20gustar%C3%ADa%20conversar."
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"

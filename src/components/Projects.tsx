@@ -23,7 +23,25 @@ const projects = [
     ],
     liveUrl: "https://businesspy.vercel.app",
     repoUrl: null, // Private repo
-    image: null, // Add screenshot path here
+    image: "/business.webp",
+  },
+  {
+    title: "Portfolio Personal",
+    subtitle: "Web — CV Online",
+    description:
+      "Este mismo sitio. Portfolio minimalista y oscuro construido con Next.js, Tailwind CSS y Framer Motion. Desplegado en Vercel con dominio propio. Diseñado, desarrollado y mantenido por mí.",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    features: [
+      "Animaciones scroll-aware",
+      "Dark theme personalizado",
+      "OG image dinámica",
+      "Fully responsive",
+      "Performance optimizado",
+      "SEO completo",
+    ],
+    liveUrl: "https://gaperalta.dev",
+    repoUrl: "https://github.com/gaperaltadev/portfolio",
+    image: null,
   },
 ];
 
@@ -59,12 +77,18 @@ export default function Projects() {
               <div className="grid md:grid-cols-2 gap-0 rounded-2xl border border-border overflow-hidden bg-card">
                 {/* Project image / placeholder */}
                 <div className="aspect-video md:aspect-auto bg-gradient-to-br from-background to-card border-b md:border-b-0 md:border-r border-border relative overflow-hidden">
-                  <Image
-                    src="/business.webp"
-                    alt="BusinessPy screenshot"
-                    fill
-                    className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
-                  />
+                  {project.image ? (
+                    <Image
+                      src={project.image}
+                      alt={`${project.title} screenshot`}
+                      fill
+                      className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-6xl font-bold text-accent/10 select-none">{project.title[0]}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Project info */}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
   { href: "#inicio", label: "Inicio" },
@@ -34,7 +35,7 @@ export default function Header() {
           href="#inicio"
           className="text-lg font-semibold tracking-tight text-foreground hover:text-accent transition-colors"
         >
-          portfolio<span className="text-accent">.</span>
+          gaperalta<span className="text-accent">.</span>
         </a>
 
         {/* Desktop */}
@@ -62,23 +63,31 @@ export default function Header() {
       </nav>
 
       {/* Mobile menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-background/95 backdrop-blur-md border-b border-border">
-          <ul className="flex flex-col px-6 py-4 gap-4">
-            {links.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-sm text-muted hover:text-foreground transition-colors"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            className="md:hidden bg-background/95 backdrop-blur-md border-b border-border overflow-hidden"
+          >
+            <ul className="flex flex-col px-6 py-4 gap-4">
+              {links.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="text-sm text-muted hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
