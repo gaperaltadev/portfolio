@@ -41,7 +41,7 @@ const projects = [
     ],
     liveUrl: "https://gaperalta.dev",
     repoUrl: "https://github.com/gaperaltadev/portfolio",
-    image: null,
+    image: "/portfolio.webp",
   },
 ];
 
