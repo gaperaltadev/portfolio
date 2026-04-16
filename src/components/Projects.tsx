@@ -15,6 +15,12 @@ const projectMeta = [
     image: "/business.webp",
   },
   {
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Recharts"],
+    liveUrl: "https://portal-transparencia-py.vercel.app",
+    repoUrl: null,
+    image: "/portal-transparencia.webp",
+  },
+  {
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     liveUrl: "https://gaperalta.dev",
     repoUrl: "https://github.com/gaperaltadev/portfolio",

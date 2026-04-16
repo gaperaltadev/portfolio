@@ -6,7 +6,7 @@
   --color-muted: #a1a1aa;
   --color-card: #141414;
   --color-border: #262626;
-  --color-accent: #c4b5a0;
+  --color-accent: #e8a04a;
   --font-sans: var(--font-inter);
   --font-mono: ui-monospace, SFMono-Regular, monospace;
 }
@@ -24,7 +24,7 @@ body {
 }
 
 ::selection {
-  background: rgba(196, 181, 160, 0.3);
+  background: rgba(232, 160, 74, 0.3);
   color: #fafafa;
 }
 

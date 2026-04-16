@@ -5,49 +5,64 @@ import { ArrowDown } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "./icons";
 import { useI18n } from "@/lib/i18n-context";
 
-function FloatingNode({ delay, x, y, size }: { delay: number; x: string; y: string; size: number }) {
+function MeshGradient() {
   const prefersReducedMotion = useReducedMotion();
-  if (prefersReducedMotion) return null;
-  return (
-    <motion.div
-      className="absolute rounded-full bg-accent/[0.07] border border-accent/[0.08]"
-      style={{ left: x, top: y, width: size, height: size }}
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{
-        opacity: [0, 1, 1, 0],
-        scale: [0.5, 1, 1, 0.5],
-        y: [0, -15, 15, 0],
-      }}
-      transition={{
-        duration: 8,
-        delay,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-    />
-  );
-}
 
-function ConnectionLine({ x1, y1, x2, y2, delay }: { x1: string; y1: string; x2: string; y2: string; delay: number }) {
-  const prefersReducedMotion = useReducedMotion();
-  if (prefersReducedMotion) return null;
   return (
-    <motion.svg
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: [0, 0.15, 0.15, 0] }}
-      transition={{ duration: 8, delay, repeat: Infinity, ease: "easeInOut" }}
-    >
-      <line
-        x1={x1}
-        y1={y1}
-        x2={x2}
-        y2={y2}
-        stroke="currentColor"
-        strokeWidth="0.5"
-        className="text-accent"
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Animated gradient blobs */}
+      <motion.div
+        className="absolute w-[600px] h-[600px] rounded-full blur-[150px] bg-accent/[0.06]"
+        style={{ top: "10%", left: "15%" }}
+        animate={
+          prefersReducedMotion
+            ? {}
+            : {
+                x: [0, 80, -40, 0],
+                y: [0, -60, 40, 0],
+              }
+        }
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
       />
-    </motion.svg>
+      <motion.div
+        className="absolute w-[500px] h-[500px] rounded-full blur-[140px] bg-blue-900/[0.04]"
+        style={{ top: "30%", right: "10%" }}
+        animate={
+          prefersReducedMotion
+            ? {}
+            : {
+                x: [0, -60, 50, 0],
+                y: [0, 50, -30, 0],
+              }
+        }
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute w-[400px] h-[400px] rounded-full blur-[120px] bg-accent/[0.04]"
+        style={{ bottom: "10%", left: "40%" }}
+        animate={
+          prefersReducedMotion
+            ? {}
+            : {
+                x: [0, 40, -60, 0],
+                y: [0, -40, 20, 0],
+              }
+        }
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Noise/grain overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.025] mix-blend-overlay"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: "128px 128px",
+        }}
+      />
+
+      {/* Radial vignette */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,var(--color-background)_70%)]" />
+    </div>
   );
 }
 
@@ -59,33 +74,7 @@ export default function Hero() {
       id="inicio"
       className="relative min-h-screen flex items-end pb-24 md:pb-32 px-6 overflow-hidden"
     >
-      {/* Grid pattern */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(rgba(196,181,160,1) 1px, transparent 1px), linear-gradient(90deg, rgba(196,181,160,1) 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_30%,var(--color-background)_75%)]" />
-
-      <FloatingNode delay={0} x="15%" y="20%" size={6} />
-      <FloatingNode delay={1.5} x="75%" y="15%" size={4} />
-      <FloatingNode delay={0.8} x="60%" y="45%" size={8} />
-      <FloatingNode delay={2.2} x="25%" y="60%" size={5} />
-      <FloatingNode delay={3} x="80%" y="70%" size={6} />
-      <FloatingNode delay={1} x="45%" y="30%" size={4} />
-      <FloatingNode delay={2.8} x="10%" y="80%" size={5} />
-      <FloatingNode delay={0.5} x="90%" y="40%" size={7} />
-
-      <ConnectionLine x1="15%" y1="20%" x2="45%" y2="30%" delay={0.3} />
-      <ConnectionLine x1="45%" y1="30%" x2="75%" y2="15%" delay={1.2} />
-      <ConnectionLine x1="60%" y1="45%" x2="80%" y2="70%" delay={0.8} />
-      <ConnectionLine x1="25%" y1="60%" x2="60%" y2="45%" delay={2} />
-      <ConnectionLine x1="10%" y1="80%" x2="25%" y2="60%" delay={2.5} />
-
-      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-accent/[0.03] rounded-full blur-[120px] pointer-events-none" />
+      <MeshGradient />
 
       <div className="relative max-w-4xl w-full mx-auto">
         <motion.div

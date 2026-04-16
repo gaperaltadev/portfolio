@@ -51,9 +51,15 @@ const skillIconMap: Record<string, SkillIconComponent> = {
   "Product Thinking": ProductIcon,
   Scrum: ScrumIcon,
   "AI Agents (Claude Code, Cursor)": AIIcon,
+  "Claude Code": AIIcon,
+  Cursor: AIIcon,
   "Prompt Engineering": PromptIcon,
   "AI-assisted workflows": AIIcon,
   "Agent design & orchestration": AIIcon,
+  "Agent design": AIIcon,
+  "Diseño de agentes": AIIcon,
+  "Multi-agent orchestration": AIIcon,
+  "Orquestación multi-agente": AIIcon,
   "Flujos asistidos por IA": AIIcon,
   "Diseño y orquestación de agentes": AIIcon,
 };
@@ -91,47 +97,63 @@ export default function Skills() {
           </h2>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {t.skills.categories.map((cat, i) => (
-            <motion.div
-              key={cat.title}
-              initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 * (i + 1) }}
-            >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {t.skills.categories.map((cat, i) => {
+            const isHero = i === 0; // IA & Agentes = first card, takes 2x2
+            return (
               <motion.div
-                variants={hoverContainerVariants}
-                initial="rest"
-                whileHover="hover"
-                className="p-6 rounded-2xl border border-border bg-card h-full group"
+                key={cat.title}
+                initial={{ opacity: 0, y: 40 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.1 * (i + 1) }}
+                className={
+                  isHero
+                    ? "sm:col-span-2 sm:row-span-2"
+                    : ""
+                }
               >
-                <h3 className="text-sm font-semibold uppercase tracking-widest text-foreground mb-5">
-                  {cat.title}
-                </h3>
-                <ul className="space-y-3">
-                  {cat.skills.map((skill) => {
-                    const Icon = skillIconMap[skill];
-                    return (
-                      <motion.li
-                        key={skill}
-                        variants={skillItemVariants}
-                        className="text-sm text-muted flex items-center gap-2.5"
-                      >
-                        {Icon ? (
-                          <span className="text-accent/60 group-hover:text-accent/90 transition-colors duration-300 shrink-0">
-                            <Icon size={15} />
-                          </span>
-                        ) : (
-                          <span className="w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0" />
-                        )}
-                        {skill}
-                      </motion.li>
-                    );
-                  })}
-                </ul>
+                <motion.div
+                  variants={hoverContainerVariants}
+                  initial="rest"
+                  whileHover="hover"
+                  className={`p-6 rounded-2xl border border-border h-full group ${
+                    isHero
+                      ? "bg-gradient-to-br from-accent/[0.08] to-card"
+                      : "bg-card"
+                  }`}
+                >
+                  <h3 className={`font-semibold uppercase tracking-widest text-foreground mb-5 ${
+                    isHero ? "text-base" : "text-sm"
+                  }`}>
+                    {cat.title}
+                  </h3>
+                  <ul className={isHero ? "space-y-4" : "space-y-3"}>
+                    {cat.skills.map((skill) => {
+                      const Icon = skillIconMap[skill];
+                      return (
+                        <motion.li
+                          key={skill}
+                          variants={skillItemVariants}
+                          className={`text-muted flex items-center gap-2.5 ${
+                            isHero ? "text-sm md:text-base" : "text-sm"
+                          }`}
+                        >
+                          {Icon ? (
+                            <span className="text-accent/60 group-hover:text-accent/90 transition-colors duration-300 shrink-0">
+                              <Icon size={isHero ? 18 : 15} />
+                            </span>
+                          ) : (
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0" />
+                          )}
+                          {skill}
+                        </motion.li>
+                      );
+                    })}
+                  </ul>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
