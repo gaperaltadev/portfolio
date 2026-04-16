@@ -4,8 +4,10 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Mail, Send, MessageCircle } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "./icons";
+import { useI18n } from "@/lib/i18n-context";
 
 export default function Contact() {
+  const { t } = useI18n();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -18,14 +20,13 @@ export default function Contact() {
           transition={{ duration: 0.7 }}
         >
           <p className="text-sm uppercase tracking-[0.3em] text-accent mb-4">
-            Contacto
+            {t.contact.label}
           </p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-            Hablemos<span className="text-accent">.</span>
+            {t.contact.heading}<span className="text-accent">.</span>
           </h2>
           <p className="text-muted leading-relaxed max-w-md mx-auto mb-12">
-            ¿Tenés un proyecto en mente o querés colaborar? Escribime y te
-            respondo lo antes posible.
+            {t.contact.description}
           </p>
         </motion.div>
 
@@ -39,7 +40,7 @@ export default function Contact() {
             className="inline-flex items-center gap-3 px-8 py-4 bg-foreground text-background font-medium rounded-full hover:bg-foreground/90 transition-colors text-sm"
           >
             <Send size={16} />
-            gaperalta.dev@gmail.com
+            {t.contact.button}
           </a>
 
           <div className="mt-12 flex items-center justify-center gap-8">

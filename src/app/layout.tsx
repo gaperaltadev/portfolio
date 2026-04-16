@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { I18nProvider } from "@/lib/i18n-context";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -10,7 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Gabriel Amarilla — Full-Stack Developer",
   description:
-    "Full-Stack Developer con experiencia en fintech. Next.js, React, TypeScript.",
+    "Full-Stack Developer con experiencia en fintech y SaaS. Next.js, React, TypeScript.",
   metadataBase: new URL("https://gaperalta.dev"),
   openGraph: {
     title: "Gabriel Amarilla — Full-Stack Developer",
@@ -49,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${inter.variable} antialiased`}>
       <body className="min-h-screen flex flex-col bg-background text-foreground">
-        {children}
+        <I18nProvider>{children}</I18nProvider>
       </body>
     </html>
   );

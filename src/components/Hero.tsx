@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "./icons";
+import { useI18n } from "@/lib/i18n-context";
 
 function FloatingNode({ delay, x, y, size }: { delay: number; x: string; y: string; size: number }) {
   const prefersReducedMotion = useReducedMotion();
@@ -51,6 +52,8 @@ function ConnectionLine({ x1, y1, x2, y2, delay }: { x1: string; y1: string; x2:
 }
 
 export default function Hero() {
+  const { t } = useI18n();
+
   return (
     <section
       id="inicio"
@@ -65,10 +68,8 @@ export default function Hero() {
         }}
       />
 
-      {/* Radial fade to hide grid edges */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_30%,var(--color-background)_75%)]" />
 
-      {/* Floating nodes */}
       <FloatingNode delay={0} x="15%" y="20%" size={6} />
       <FloatingNode delay={1.5} x="75%" y="15%" size={4} />
       <FloatingNode delay={0.8} x="60%" y="45%" size={8} />
@@ -78,14 +79,12 @@ export default function Hero() {
       <FloatingNode delay={2.8} x="10%" y="80%" size={5} />
       <FloatingNode delay={0.5} x="90%" y="40%" size={7} />
 
-      {/* Connection lines between nodes */}
       <ConnectionLine x1="15%" y1="20%" x2="45%" y2="30%" delay={0.3} />
       <ConnectionLine x1="45%" y1="30%" x2="75%" y2="15%" delay={1.2} />
       <ConnectionLine x1="60%" y1="45%" x2="80%" y2="70%" delay={0.8} />
       <ConnectionLine x1="25%" y1="60%" x2="60%" y2="45%" delay={2} />
       <ConnectionLine x1="10%" y1="80%" x2="25%" y2="60%" delay={2.5} />
 
-      {/* Gradient accent glow */}
       <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-accent/[0.03] rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative max-w-4xl w-full mx-auto">
@@ -97,7 +96,7 @@ export default function Hero() {
         >
           <span className="w-8 h-px bg-accent" />
           <span className="text-xs uppercase tracking-[0.3em] text-muted">
-            Asunción, Paraguay
+            {t.hero.location}
           </span>
         </motion.div>
 
@@ -116,7 +115,7 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="mt-4 text-xl md:text-2xl text-muted font-light tracking-tight"
         >
-          Full-Stack Developer
+          {t.hero.role}
         </motion.p>
 
         <motion.p
@@ -125,8 +124,7 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.35 }}
           className="mt-8 text-base text-muted/80 max-w-lg leading-relaxed"
         >
-          +5 años construyendo aplicaciones web en fintech y SaaS.
-          Actualmente creando mis propios productos.
+          {t.hero.bio}
         </motion.p>
 
         <motion.div
@@ -158,12 +156,11 @@ export default function Hero() {
             href="#proyectos"
             className="text-sm text-muted hover:text-foreground transition-colors"
           >
-            Ver proyectos &darr;
+            {t.hero.cta} &darr;
           </a>
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
       <motion.a
         href="#sobre-mi"
         initial={{ opacity: 0 }}

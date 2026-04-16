@@ -2,31 +2,76 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useI18n } from "@/lib/i18n-context";
+import {
+  ReactIcon,
+  NextjsIcon,
+  TypeScriptIcon,
+  TailwindIcon,
+  HTMLCSSIcon,
+  FramerIcon,
+  NodejsIcon,
+  APIIcon,
+  PostgreSQLIcon,
+  PrismaIcon,
+  AuthIcon,
+  GitIcon,
+  VercelIcon,
+  CICDIcon,
+  MonorepoIcon,
+  FigmaIcon,
+  ProductIcon,
+  ScrumIcon,
+  AIIcon,
+  PromptIcon,
+} from "./icons";
 
-const categories = [
-  {
-    title: "UI & Frontend",
-    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML/CSS", "Framer Motion"],
+type SkillIconComponent = React.FC<{ size?: number }>;
+
+const skillIconMap: Record<string, SkillIconComponent> = {
+  React: ReactIcon,
+  "Next.js": NextjsIcon,
+  TypeScript: TypeScriptIcon,
+  "Tailwind CSS": TailwindIcon,
+  "HTML/CSS": HTMLCSSIcon,
+  "Framer Motion": FramerIcon,
+  "Node.js": NodejsIcon,
+  "REST APIs": APIIcon,
+  PostgreSQL: PostgreSQLIcon,
+  Prisma: PrismaIcon,
+  "Auth & Payments": AuthIcon,
+  "Auth & Pagos": AuthIcon,
+  Git: GitIcon,
+  Vercel: VercelIcon,
+  "CI/CD": CICDIcon,
+  Monorepos: MonorepoIcon,
+  "UI/UX Design": FigmaIcon,
+  "UI/UX Diseño": FigmaIcon,
+  Figma: FigmaIcon,
+  "Product Thinking": ProductIcon,
+  Scrum: ScrumIcon,
+  "AI Agents (Claude Code, Cursor)": AIIcon,
+  "Prompt Engineering": PromptIcon,
+  "AI-assisted workflows": AIIcon,
+  "Agent design & orchestration": AIIcon,
+  "Flujos asistidos por IA": AIIcon,
+  "Diseño y orquestación de agentes": AIIcon,
+};
+
+const hoverContainerVariants = {
+  rest: {},
+  hover: {
+    transition: { staggerChildren: 0.04 },
   },
-  {
-    title: "Backend & APIs",
-    skills: ["Node.js", "REST APIs", "PostgreSQL", "Prisma", "Auth & Payments"],
-  },
-  {
-    title: "Infraestructura",
-    skills: ["Git", "Vercel", "CI/CD", "Monorepos"],
-  },
-  {
-    title: "Producto & UX",
-    skills: ["UI/UX Design", "Figma", "Product Thinking", "Scrum"],
-  },
-  {
-    title: "IA & Desarrollo",
-    skills: ["AI Agents (Copilot, Cursor)", "Prompt Engineering", "AI-assisted workflows", "Code generation"],
-  },
-];
+};
+
+const skillItemVariants = {
+  rest: { x: 0 },
+  hover: { x: 4 },
+};
 
 export default function Skills() {
+  const { t } = useI18n();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -39,36 +84,52 @@ export default function Skills() {
           transition={{ duration: 0.7 }}
         >
           <p className="text-sm uppercase tracking-[0.3em] text-accent mb-4">
-            Skills
+            {t.skills.label}
           </p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-16">
-            Tecnologías que uso<span className="text-accent">.</span>
+            {t.skills.heading}<span className="text-accent">.</span>
           </h2>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {categories.map((cat, i) => (
+          {t.skills.categories.map((cat, i) => (
             <motion.div
               key={cat.title}
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.1 * (i + 1) }}
-              className="p-6 rounded-2xl border border-border bg-card"
             >
-              <h3 className="text-sm font-semibold uppercase tracking-widest text-foreground mb-5">
-                {cat.title}
-              </h3>
-              <ul className="space-y-3">
-                {cat.skills.map((skill) => (
-                  <li
-                    key={skill}
-                    className="text-sm text-muted flex items-center gap-2"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent/60" />
-                    {skill}
-                  </li>
-                ))}
-              </ul>
+              <motion.div
+                variants={hoverContainerVariants}
+                initial="rest"
+                whileHover="hover"
+                className="p-6 rounded-2xl border border-border bg-card h-full group"
+              >
+                <h3 className="text-sm font-semibold uppercase tracking-widest text-foreground mb-5">
+                  {cat.title}
+                </h3>
+                <ul className="space-y-3">
+                  {cat.skills.map((skill) => {
+                    const Icon = skillIconMap[skill];
+                    return (
+                      <motion.li
+                        key={skill}
+                        variants={skillItemVariants}
+                        className="text-sm text-muted flex items-center gap-2.5"
+                      >
+                        {Icon ? (
+                          <span className="text-accent/60 group-hover:text-accent/90 transition-colors duration-300 shrink-0">
+                            <Icon size={15} />
+                          </span>
+                        ) : (
+                          <span className="w-1.5 h-1.5 rounded-full bg-accent/60 shrink-0" />
+                        )}
+                        {skill}
+                      </motion.li>
+                    );
+                  })}
+                </ul>
+              </motion.div>
             </motion.div>
           ))}
         </div>

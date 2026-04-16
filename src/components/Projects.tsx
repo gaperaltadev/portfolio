@@ -5,40 +5,17 @@ import { useRef } from "react";
 import { ExternalLink } from "lucide-react";
 import { GitHubIcon } from "./icons";
 import Image from "next/image";
+import { useI18n } from "@/lib/i18n-context";
 
-const projects = [
+const projectMeta = [
   {
-    title: "BusinessPy",
-    subtitle: "SaaS — Gestión de negocios",
-    description:
-      "Plataforma integral para negocios de servicios: punto de venta, agenda de citas, reservas online, inventario, finanzas, gestión de equipo y más. Diseñada para spas, salones, barberías y cualquier negocio de servicios.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel"],
-    features: [
-      "Punto de venta (POS)",
-      "Agenda y reservas online",
-      "Inventario en tiempo real",
-      "Finanzas y reportes",
-      "Roles y permisos",
-      "Linktree integrado",
-    ],
     liveUrl: "https://businesspy.vercel.app",
-    repoUrl: null, // Private repo
+    repoUrl: null,
     image: "/business.webp",
   },
   {
-    title: "Portfolio Personal",
-    subtitle: "Web — CV Online",
-    description:
-      "Este mismo sitio. Portfolio minimalista y oscuro construido con Next.js, Tailwind CSS y Framer Motion. Desplegado en Vercel con dominio propio. Diseñado, desarrollado y mantenido por mí.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    features: [
-      "Animaciones scroll-aware",
-      "Dark theme personalizado",
-      "OG image dinámica",
-      "Fully responsive",
-      "Performance optimizado",
-      "SEO completo",
-    ],
     liveUrl: "https://gaperalta.dev",
     repoUrl: "https://github.com/gaperaltadev/portfolio",
     image: "/portfolio.webp",
@@ -46,8 +23,14 @@ const projects = [
 ];
 
 export default function Projects() {
+  const { t } = useI18n();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const projects = t.projects.items.map((item, i) => ({
+    ...item,
+    ...projectMeta[i],
+  }));
 
   return (
     <section id="proyectos" className="py-32 px-6" ref={ref}>
@@ -58,10 +41,10 @@ export default function Projects() {
           transition={{ duration: 0.7 }}
         >
           <p className="text-sm uppercase tracking-[0.3em] text-accent mb-4">
-            Proyectos
+            {t.projects.label}
           </p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-16">
-            Lo que estoy construyendo<span className="text-accent">.</span>
+            {t.projects.heading}<span className="text-accent">.</span>
           </h2>
         </motion.div>
 
@@ -75,7 +58,6 @@ export default function Projects() {
               className="group"
             >
               <div className="grid md:grid-cols-2 gap-0 rounded-2xl border border-border overflow-hidden bg-card">
-                {/* Project image / placeholder */}
                 <div className="aspect-video md:aspect-auto bg-gradient-to-br from-background to-card border-b md:border-b-0 md:border-r border-border relative overflow-hidden">
                   {project.image ? (
                     <Image
@@ -91,7 +73,6 @@ export default function Projects() {
                   )}
                 </div>
 
-                {/* Project info */}
                 <div className="p-8 md:p-10 flex flex-col justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-widest text-accent mb-2">
@@ -102,7 +83,6 @@ export default function Projects() {
                       {project.description}
                     </p>
 
-                    {/* Features */}
                     <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-6">
                       {project.features.map((f) => (
                         <p key={f} className="text-xs text-muted flex items-center gap-2">
@@ -112,7 +92,6 @@ export default function Projects() {
                       ))}
                     </div>
 
-                    {/* Stack */}
                     <div className="flex flex-wrap gap-2 mb-8">
                       {project.stack.map((tech) => (
                         <span
@@ -125,7 +104,6 @@ export default function Projects() {
                     </div>
                   </div>
 
-                  {/* Links */}
                   <div className="flex items-center gap-4">
                     {project.liveUrl && (
                       <a
@@ -135,7 +113,7 @@ export default function Projects() {
                         className="flex items-center gap-2 text-sm text-foreground hover:text-accent transition-colors"
                       >
                         <ExternalLink size={16} />
-                        Ver demo
+                        {t.projects.viewDemo}
                       </a>
                     )}
                     {project.repoUrl && (
@@ -146,7 +124,7 @@ export default function Projects() {
                         className="flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
                       >
                         <GitHubIcon size={16} />
-                        Código
+                        {t.projects.viewCode}
                       </a>
                     )}
                   </div>
