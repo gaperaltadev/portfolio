@@ -1,65 +1,99 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "./icons";
 import { useI18n } from "@/lib/i18n-context";
 
-function MeshGradient() {
+/** Lightweight canvas grid with drifting dots — no external resources, GPU-friendly */
+function GridBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const prefersReducedMotion = useReducedMotion();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationId: number;
+    let width: number;
+    let height: number;
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio, 2);
+      width = canvas!.clientWidth;
+      height = canvas!.clientHeight;
+      canvas!.width = width * dpr;
+      canvas!.height = height * dpr;
+      ctx!.scale(dpr, dpr);
+    }
+
+    resize();
+    setReady(true);
+
+    const COLS = 18;
+    const ROWS = 12;
+    const accentRGB = [232, 160, 74]; // --color-accent
+
+    // Create dots with slight random offsets
+    const dots = Array.from({ length: COLS * ROWS }, (_, i) => {
+      const col = i % COLS;
+      const row = Math.floor(i / COLS);
+      return {
+        baseX: (col / (COLS - 1)) * 1.2 - 0.1,
+        baseY: (row / (ROWS - 1)) * 1.2 - 0.1,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.3 + Math.random() * 0.4,
+        amp: 0.006 + Math.random() * 0.008,
+      };
+    });
+
+    function draw(time: number) {
+      ctx!.clearRect(0, 0, width, height);
+
+      const t = time * 0.001;
+
+      for (const dot of dots) {
+        const drift = prefersReducedMotion ? 0 : 1;
+        const x = (dot.baseX + Math.sin(t * dot.speed + dot.phase) * dot.amp * drift) * width;
+        const y = (dot.baseY + Math.cos(t * dot.speed * 0.7 + dot.phase) * dot.amp * drift) * height;
+
+        // Distance from center for intensity falloff
+        const cx = x / width - 0.5;
+        const cy = y / height - 0.5;
+        const dist = Math.sqrt(cx * cx + cy * cy);
+        const alpha = Math.max(0, 0.12 - dist * 0.15);
+
+        ctx!.beginPath();
+        ctx!.arc(x, y, 1.2, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgba(${accentRGB[0]},${accentRGB[1]},${accentRGB[2]},${alpha})`;
+        ctx!.fill();
+      }
+
+      animationId = requestAnimationFrame(draw);
+    }
+
+    animationId = requestAnimationFrame(draw);
+
+    window.addEventListener("resize", resize);
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", resize);
+    };
+  }, [prefersReducedMotion]);
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Animated gradient blobs */}
-      <motion.div
-        className="absolute w-[600px] h-[600px] rounded-full blur-[150px] bg-accent/[0.06]"
-        style={{ top: "10%", left: "15%" }}
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-                x: [0, 80, -40, 0],
-                y: [0, -60, 40, 0],
-              }
-        }
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+        style={{ opacity: ready ? 1 : 0, transition: "opacity 0.8s ease-in" }}
+        aria-hidden="true"
       />
-      <motion.div
-        className="absolute w-[500px] h-[500px] rounded-full blur-[140px] bg-blue-900/[0.04]"
-        style={{ top: "30%", right: "10%" }}
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-                x: [0, -60, 50, 0],
-                y: [0, 50, -30, 0],
-              }
-        }
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute w-[400px] h-[400px] rounded-full blur-[120px] bg-accent/[0.04]"
-        style={{ bottom: "10%", left: "40%" }}
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-                x: [0, 40, -60, 0],
-                y: [0, -40, 20, 0],
-              }
-        }
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      {/* Noise/grain overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.025] mix-blend-overlay"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: "128px 128px",
-        }}
-      />
-
       {/* Radial vignette */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,var(--color-background)_70%)]" />
     </div>
@@ -74,7 +108,7 @@ export default function Hero() {
       id="inicio"
       className="relative min-h-screen flex items-end pb-24 md:pb-32 px-6 overflow-hidden"
     >
-      <MeshGradient />
+      <GridBackground />
 
       <div className="relative max-w-4xl w-full mx-auto">
         <motion.div
