@@ -15,16 +15,16 @@ const projectMeta = [
     image: "/business.webp",
   },
   {
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Recharts"],
-    liveUrl: "https://portal-transparencia-py.vercel.app",
+    stack: ["Next.js", "TypeScript", "Supabase", "Meta WhatsApp API", "n8n", "Railway", "Netlify", "Sentry"],
+    liveUrl: "https://cgs-paraguay.netlify.app",
     repoUrl: null,
-    image: "/portal-transparencia.webp",
+    image: "/cgs-paraguay.webp",
   },
   {
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    liveUrl: "https://gaperalta.dev",
-    repoUrl: "https://github.com/gaperaltadev/portfolio",
-    image: "/portfolio.webp",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Recharts"],
+    liveUrl: "https://portal-transparencia-py.vercel.app",
+    repoUrl: "https://github.com/gaperaltadev/portal-transparencia-py",
+    image: "/portal-transparencia.webp",
   },
 ];
 

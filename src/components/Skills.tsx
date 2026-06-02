@@ -8,7 +8,6 @@ import {
   NextjsIcon,
   TypeScriptIcon,
   TailwindIcon,
-  HTMLCSSIcon,
   FramerIcon,
   NodejsIcon,
   APIIcon,
@@ -18,12 +17,9 @@ import {
   GitIcon,
   VercelIcon,
   CICDIcon,
-  MonorepoIcon,
   FigmaIcon,
   ProductIcon,
   ScrumIcon,
-  AIIcon,
-  PromptIcon,
 } from "./icons";
 
 type SkillIconComponent = React.FC<{ size?: number }>;
@@ -33,35 +29,26 @@ const skillIconMap: Record<string, SkillIconComponent> = {
   "Next.js": NextjsIcon,
   TypeScript: TypeScriptIcon,
   "Tailwind CSS": TailwindIcon,
-  "HTML/CSS": HTMLCSSIcon,
   "Framer Motion": FramerIcon,
+  Redux: ReactIcon,
+  "React Native": ReactIcon,
   "Node.js": NodejsIcon,
+  "Express.js": NodejsIcon,
   "REST APIs": APIIcon,
   PostgreSQL: PostgreSQLIcon,
   Prisma: PrismaIcon,
-  "Auth & Payments": AuthIcon,
-  "Auth & Pagos": AuthIcon,
+  Supabase: PostgreSQLIcon,
+  Firebase: AuthIcon,
+  "AWS Cognito": AuthIcon,
+  Stripe: AuthIcon,
   Git: GitIcon,
+  "GitHub Actions": CICDIcon,
   Vercel: VercelIcon,
+  Railway: VercelIcon,
   "CI/CD": CICDIcon,
-  Monorepos: MonorepoIcon,
-  "UI/UX Design": FigmaIcon,
-  "UI/UX Diseño": FigmaIcon,
   Figma: FigmaIcon,
   "Product Thinking": ProductIcon,
   Scrum: ScrumIcon,
-  "AI Agents (Claude Code, Cursor)": AIIcon,
-  "Claude Code": AIIcon,
-  Cursor: AIIcon,
-  "Prompt Engineering": PromptIcon,
-  "AI-assisted workflows": AIIcon,
-  "Agent design & orchestration": AIIcon,
-  "Agent design": AIIcon,
-  "Diseño de agentes": AIIcon,
-  "Multi-agent orchestration": AIIcon,
-  "Orquestación multi-agente": AIIcon,
-  "Flujos asistidos por IA": AIIcon,
-  "Diseño y orquestación de agentes": AIIcon,
 };
 
 const hoverContainerVariants = {
@@ -99,7 +86,7 @@ export default function Skills() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {t.skills.categories.map((cat, i) => {
-            const isHero = i === 0; // IA & Agentes = first card, takes 2x2
+            const isHero = i === 0; // UI & Frontend = first card, takes 2x2
             return (
               <motion.div
                 key={cat.title}
